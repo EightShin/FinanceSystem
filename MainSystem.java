@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class MainSystem {
-    static Scanner sc = new Scanner(System.in);
+    static Scanner one = new Scanner(System.in);
     static HashMap<String, Acc2> Data = new HashMap<>();
 
     public static void main(String[] args) {
@@ -12,8 +12,8 @@ public class MainSystem {
             System.out.println("2. Login");
             System.out.println("3. Exit");
             System.out.print("Choose: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = one.nextInt();
+            one.nextLine();
 
             switch (choice) {
                 case 1 -> createAccount();
@@ -34,15 +34,15 @@ public class MainSystem {
         }
 
         System.out.print("Enter username: ");
-        String username = sc.nextLine();
+        String username = one.nextLine();
         if (Data.containsKey(username)) {
             System.out.println("Username already exists!");
             return;
         }
 
         System.out.print("Enter 4-digit PIN: ");
-        int pin = sc.nextInt();
-        sc.nextLine();
+        int pin = one.nextInt();
+        one.nextLine();
 
         if (pin < 1000 || pin > 9999) {
             System.out.println("Invalid PIN! Must be 4 digits.");
@@ -55,22 +55,22 @@ public class MainSystem {
 
     public static void login () {
         System.out.print("Enter username: ");
-        String username = sc.nextLine();
+        String username = one.nextLine();
         System.out.print("Enter 4-digit PIN: ");
-        int pin = sc.nextInt();
-        sc.nextLine();
+        int pin = one.nextInt();
+        one.nextLine();
 
         Acc2 acc = Data.get(username);
 
         if (acc != null && acc.getPin() == pin) {
             System.out.println("Login successful! Welcome, " + username + ".");
-            accountMenu(acc);
+            mainMenu(acc);
         } else {
             System.out.println("Invalid username or PIN!");
         }
     }
 
-    public static void accountMenu (Acc2 acc) {
+    public static void mainMenu (Acc2 acc) {
         while (true) {
             System.out.println("\n--- ACCOUNT MENU ---");
             System.out.println("1. Deposit");
@@ -78,20 +78,20 @@ public class MainSystem {
             System.out.println("3. Check Balance");
             System.out.println("4. Logout");
             System.out.print("Choose: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = one.nextInt();
+            one.nextLine();
 
             switch (choice) {
                 case 1 -> {
                     System.out.print("Enter amount to deposit: ");
-                    double amount = sc.nextDouble();
-                    sc.nextLine();
+                    double amount = one.nextDouble();
+                    one.nextLine();
                     acc.deposit(amount);
                 }
                 case 2 -> {
                     System.out.print("Enter amount to withdraw: ");
-                    double amount = sc.nextDouble();
-                    sc.nextLine();
+                    double amount = one.nextDouble();
+                    one.nextLine();
                     acc.withdraw(amount);
                 }
                 case 3 -> System.out.println("Your balance is: ₱" + acc.getBalance());
