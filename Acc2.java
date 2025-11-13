@@ -1,4 +1,3 @@
-// Account.java
 public class Acc2 extends Acc {
     public Acc2(String username, int pin) {
         super(username, pin);
