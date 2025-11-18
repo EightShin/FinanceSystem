@@ -110,7 +110,7 @@ public class MainSystem {
     Acc2 receiver = Data.get(targetName);
     if (receiver == null) {
         System.out.println("Username not found!");
-        return;                                    // guard clause
+        return;
     }
     if (targetName.equals(sender.getUsername())) {
         System.out.println("Cannot transfer to yourself!");
@@ -119,7 +119,7 @@ public class MainSystem {
 
     System.out.print("Amount to transfer: ");
     double amt = one.nextDouble();
-    one.nextLine();                              // consume newline
+    one.nextLine();
 
     if (amt <= 0) {
         System.out.println("Amount must be positive!");
