@@ -76,7 +76,8 @@ public class MainSystem {
             System.out.println("1. Deposit");
             System.out.println("2. Withdraw");
             System.out.println("3. Check Balance");
-            System.out.println("4. Logout");
+            System.out.println("4. Transfer");
+            System.out.println("5. Logout");
             System.out.print("Choose: ");
             int choice = one.nextInt();
             one.nextLine();
@@ -95,12 +96,44 @@ public class MainSystem {
                     acc.withdraw(amount);
                 }
                 case 3 -> System.out.println("Your balance is: ₱" + acc.getBalance());
-                case 4 -> {
+                case 4 -> transfer(acc);
+                case 5 -> {
                     System.out.println("Logging out...");
                     return;
                 }
                 default -> System.out.println("Invalid option!");
             }
+    private static void transfer(Acc2 sender) {
+    System.out.print("Enter recipient username: ");
+    String targetName = one.nextLine().trim();
+
+    Acc2 receiver = Data.get(targetName);
+    if (receiver == null) {
+        System.out.println("Username not found!");
+        return;                                    // guard clause
+    }
+    if (targetName.equals(sender.getUsername())) {
+        System.out.println("Cannot transfer to yourself!");
+        return;
+    }
+
+    System.out.print("Amount to transfer: ");
+    double amt = one.nextDouble();
+    one.nextLine();                              // consume newline
+
+    if (amt <= 0) {
+        System.out.println("Amount must be positive!");
+        return;
+    }
+    if (sender.getBalance() < amt) {
+        System.out.println("Insufficient balance!");
+        return;
+    }
+    sender.withdraw(amt);
+    receiver.deposit(amt);
+
+    System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
+}
         }
     }
 }
