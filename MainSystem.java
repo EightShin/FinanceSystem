@@ -103,10 +103,11 @@ public class MainSystem {
                 }
                 default -> System.out.println("Invalid option!");
             }
-    private static void transfer(Acc2 sender) {
+        }
+    }
+            private static void transfer(Acc2 sender) {
     System.out.print("Enter recipient username: ");
     String targetName = one.nextLine().trim();
-
     Acc2 receiver = Data.get(targetName);
     if (receiver == null) {
         System.out.println("Username not found!");
@@ -133,7 +134,5 @@ public class MainSystem {
     receiver.deposit(amt);
 
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
-}
-        }
     }
 }
