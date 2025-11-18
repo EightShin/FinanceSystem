@@ -105,10 +105,13 @@ public class MainSystem {
             }
         }
     }
-            private static void transfer(Acc2 sender) {
+            
+    private static void transfer (Acc2 sender) {
+
     System.out.print("Enter recipient username: ");
     String targetName = one.nextLine().trim();
     Acc2 receiver = Data.get(targetName);
+
     if (receiver == null) {
         System.out.println("Username not found!");
         return;
@@ -130,6 +133,7 @@ public class MainSystem {
         System.out.println("Insufficient balance!");
         return;
     }
+    
     sender.withdraw(amt);
     receiver.deposit(amt);
 
