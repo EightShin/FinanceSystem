@@ -105,12 +105,12 @@ public class MainSystem {
             }
         }
     }
-            
+
     private static void transfer (Acc2 sender) {
     System.out.print("Enter recipient username: ");
     String targetName = one.nextLine().trim();
     Acc2 receiver = Data.get(targetName);
-    
+
     if (receiver == null) {
         System.out.println("Username not found!");
         return; }
