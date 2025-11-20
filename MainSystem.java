@@ -79,6 +79,7 @@ public class MainSystem {
             System.out.println("4. Transfer");
             System.out.println("5. Send Load");
             System.out.println("6. Logout");
+            System.out.println("7. Check Load Balance");
             System.out.print("Choose: ");
             int choice = one.nextInt();
             one.nextLine();
@@ -96,7 +97,7 @@ public class MainSystem {
                     one.nextLine();
                     acc.withdraw(amount);
                 }
-                case 3 -> System.out.println("Your balance is: ₱" + acc.getBalance());
+                case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
                 case 4 -> transfer(acc);
 
                 
@@ -107,12 +108,12 @@ public class MainSystem {
 
                     if (receiver == null) {
                     System.out.println("Invalid! Username not found! Please try again.");
-                    return;
+                    continue;
                     }
 
                     if (receiver.getUsername().equals(acc.getUsername())) {
                     System.out.println("Invalid! Cannot send load to yourself! Please try again.");
-                    return;
+                    continue;
                 }   
 
                 System.out.print("Enter load amount: ");
@@ -125,6 +126,7 @@ public class MainSystem {
                     System.out.println("Logging out...");
                     return;
                 }
+                case 7 -> System.out.printf("Your load balance is: ₱%.2f%n", acc.getLoadBalance());
                 default -> System.out.println("Invalid option! Please try again.");
             }
         }
@@ -163,7 +165,7 @@ public class MainSystem {
     }
 
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
-    sender.sendLoad((int) amount, receiver);
+    sender.sendLoad(amount, receiver);
     }
 
 

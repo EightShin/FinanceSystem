@@ -6,7 +6,7 @@ public class Acc2 extends Acc {
     @Override
     public void deposit (double amount) {
         balance += amount;
-        System.out.println("Deposited ₱" + amount);
+        System.out.printf("Deposited ₱%.2f%n", amount);
     }
 
     public void deposit (int amount) {
@@ -19,7 +19,7 @@ public class Acc2 extends Acc {
             System.out.println("Insufficient balance!");
         } else {
             balance -= amount;
-            System.out.println("Withdrew ₱" + amount);
+            System.out.printf("Withdrew ₱%.2f%n", amount);
         }
     }
 
@@ -36,7 +36,7 @@ public class Acc2 extends Acc {
         }
 
     balance -= amount;
-    receiver.balance += amount;
+    receiver.loadBalance += amount;
 
     System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
     }
