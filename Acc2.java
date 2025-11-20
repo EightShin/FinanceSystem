@@ -23,6 +23,29 @@ public class Acc2 extends Acc {
         }
     }
 
+    @Override
+    public void sendLoad(double amount, Acc2 receiver) {
+
+         if (amount <= 0) {
+        System.out.println("Load amount must be positive!");
+        return;
+        }
+        if (amount > balance) {
+        System.out.println("Insufficient balance to send load!");
+        return;
+        }
+
+    balance -= amount;
+    receiver.balance += amount;
+
+    System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
+    }
+   
+    public void sendLoad(int amount, Acc2 receiver) {
+        sendLoad((double) amount, receiver);
+    }
+
+
     public void withdraw (int amount) {
         withdraw((double) amount);
     }

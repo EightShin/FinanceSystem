@@ -22,7 +22,7 @@ public class MainSystem {
                     System.out.println("Exiting system...");
                     return;
                 }
-                default -> System.out.println("Invalid choice!");
+                default -> System.out.println("Invalid choice! Please try again.");
             }
         }
     }
@@ -45,7 +45,7 @@ public class MainSystem {
         one.nextLine();
 
         if (pin < 1000 || pin > 9999) {
-            System.out.println("Invalid PIN! Must be 4 digits.");
+            System.out.println("Invalid PIN! Must be 4 digits. Please try again.");
             return;
         }
 
@@ -66,7 +66,7 @@ public class MainSystem {
             System.out.println("Login successful! Welcome, " + username + ".");
             mainMenu(acc);
         } else {
-            System.out.println("Invalid username or PIN!");
+            System.out.println("Invalid username or PIN! Please try again.");
         }
     }
 
@@ -77,7 +77,8 @@ public class MainSystem {
             System.out.println("2. Withdraw");
             System.out.println("3. Check Balance");
             System.out.println("4. Transfer");
-            System.out.println("5. Logout");
+            System.out.println("5. Send Load");
+            System.out.println("6. Logout");
             System.out.print("Choose: ");
             int choice = one.nextInt();
             one.nextLine();
@@ -97,38 +98,74 @@ public class MainSystem {
                 }
                 case 3 -> System.out.println("Your balance is: ₱" + acc.getBalance());
                 case 4 -> transfer(acc);
+
+                
                 case 5 -> {
+                    System.out.print("Enter recipient username: ");
+                    String targetName = one.nextLine().trim();
+                    Acc2 receiver = Data.get(targetName);
+
+                    if (receiver == null) {
+                    System.out.println("Invalid! Username not found! Please try again.");
+                    return;
+                    }
+
+                    if (receiver.getUsername().equals(acc.getUsername())) {
+                    System.out.println("Invalid! Cannot send load to yourself! Please try again.");
+                    return;
+                }   
+
+                System.out.print("Enter load amount: ");
+                double loadAmt = one.nextDouble();
+                one.nextLine();
+
+                loadTransfer(acc, receiver, loadAmt);
+                }
+                case 6 -> {
                     System.out.println("Logging out...");
                     return;
                 }
-                default -> System.out.println("Invalid option!");
+                default -> System.out.println("Invalid option! Please try again.");
             }
         }
     }
 
     private static void transfer (Acc2 sender) {
+
     System.out.print("Enter recipient username: ");
     String targetName = one.nextLine().trim();
     Acc2 receiver = Data.get(targetName);
 
     if (receiver == null) {
-        System.out.println("Username not found!");
+        System.out.println("Invalid! Username not found! Please try again.");
         return; }
+
     if (targetName.equals(sender.getUsername())) {
-        System.out.println("Cannot transfer to yourself!");
+        System.out.println("Invalid! Cannot transfer to yourself! Please try again.");
         return; }
+
     System.out.print("Amount to transfer: ");
     double amt = one.nextDouble();
     one.nextLine();
+
     if (amt <= 0) {
-        System.out.println("Amount must be positive!");
+        System.out.println("Invalid! Amount must be positive! Please try again.");
         return; }
+
     if (sender.getBalance() < amt) {
-        System.out.println("Insufficient balance!");
+        System.out.println("Invalid! Insufficient balance! Please try again.");
         return; }
 
     sender.withdraw(amt);
     receiver.deposit(amt);
+
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     }
+
+    public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
+    sender.sendLoad((int) amount, receiver);
+    }
+
+
+
 }

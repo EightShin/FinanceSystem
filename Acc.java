@@ -11,4 +11,5 @@ public abstract class Acc {
 
     public abstract void deposit (double amount);
     public abstract void withdraw (double amount);
+    public abstract void sendLoad(double amount, Acc2 receiver);
 }
