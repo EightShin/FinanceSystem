@@ -70,67 +70,67 @@ public class MainSystem {
         }
     }
 
-    public static void mainMenu (Acc2 acc) {
-        while (true) {
-            System.out.println("\n--- ACCOUNT MENU ---");
-            System.out.println("1. Deposit");
-            System.out.println("2. Withdraw");
-            System.out.println("3. Check Balance");
-            System.out.println("4. Transfer");
-            System.out.println("5. Send Load");
-            System.out.println("6. Logout");
-            System.out.println("7. Check Load Balance");
-            System.out.print("Choose: ");
-            int choice = one.nextInt();
-            one.nextLine();
+  public static void mainMenu(Acc2 acc) {
+    while (true) {
+        System.out.println("\n--- ACCOUNT MENU ---");
+        System.out.println("1. Deposit");
+        System.out.println("2. Withdraw");
+        System.out.println("3. Check Balance");
+        System.out.println("4. Transfer");
+        System.out.println("5. Send Load");
+        System.out.println("6. Billing");       
+        System.out.println("7. Logout");        
+        System.out.println("8. Check Load Balance");
+        System.out.print("Choose: ");
+        int choice = one.nextInt();
+        one.nextLine();
 
-            switch (choice) {
-                case 1 -> {
-                    System.out.print("Enter amount to deposit: ");
-                    double amount = one.nextDouble();
-                    one.nextLine();
-                    acc.deposit(amount);
-                }
-                case 2 -> {
-                    System.out.print("Enter amount to withdraw: ");
-                    double amount = one.nextDouble();
-                    one.nextLine();
-                    acc.withdraw(amount);
-                }
-                case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
-                case 4 -> transfer(acc);
+        switch (choice) {
+            case 1 -> {
+                System.out.print("Enter amount to deposit: ");
+                double amount = one.nextDouble();
+                one.nextLine();
+                acc.deposit(amount);
+            }
+            case 2 -> {
+                System.out.print("Enter amount to withdraw: ");
+                double amount = one.nextDouble();
+                one.nextLine();
+                acc.withdraw(amount);
+            }
+            case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
+            case 4 -> transfer(acc);
+            case 5 -> {
+                System.out.print("Enter recipient username: ");
+                String targetName = one.nextLine().trim();
+                Acc2 receiver = Data.get(targetName);
 
-                
-                case 5 -> {
-                    System.out.print("Enter recipient username: ");
-                    String targetName = one.nextLine().trim();
-                    Acc2 receiver = Data.get(targetName);
-
-                    if (receiver == null) {
+                if (receiver == null) {
                     System.out.println("Invalid! Username not found! Please try again.");
                     continue;
-                    }
+                }
 
-                    if (receiver.getUsername().equals(acc.getUsername())) {
+                if (receiver.getUsername().equals(acc.getUsername())) {
                     System.out.println("Invalid! Cannot send load to yourself! Please try again.");
                     continue;
-                }   
+                }
 
                 System.out.print("Enter load amount: ");
                 double loadAmt = one.nextDouble();
                 one.nextLine();
 
                 loadTransfer(acc, receiver, loadAmt);
-                }
-                case 6 -> {
-                    System.out.println("Logging out...");
-                    return;
-                }
-                case 7 -> System.out.printf("Your load balance is: ₱%.2f%n", acc.getLoadBalance());
-                default -> System.out.println("Invalid option! Please try again.");
             }
+            case 6 -> BillingSystem.processBilling(acc, one);  
+            case 7 -> {
+                System.out.println("Logging out...");
+                return;
+            }
+            case 8 -> System.out.printf("Your load balance is: ₱%.2f%n", acc.getLoadBalance());
+            default -> System.out.println("Invalid option! Please try again.");
         }
     }
+}
 
     private static void transfer (Acc2 sender) {
 
@@ -167,7 +167,5 @@ public class MainSystem {
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
     sender.sendLoad(amount, receiver);
     }
-
-
-
+    
 }

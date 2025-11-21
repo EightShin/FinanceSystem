@@ -13,9 +13,21 @@ public abstract class Acc {
 
     public abstract void deposit (double amount);
     public abstract void withdraw (double amount);
-    public abstract void sendLoad(double amount, Acc2 receiver);
+    public abstract void sendLoad(double amount, Acc receiver);
 
     public double getLoadBalance() {
         return loadBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

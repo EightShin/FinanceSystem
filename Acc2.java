@@ -24,7 +24,7 @@ public class Acc2 extends Acc {
     }
 
     @Override
-    public void sendLoad(double amount, Acc2 receiver) {
+    public void sendLoad(double amount, Acc receiver) {
 
          if (amount <= 0) {
         System.out.println("Load amount must be positive!");
@@ -41,7 +41,7 @@ public class Acc2 extends Acc {
     System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
     }
    
-    public void sendLoad(int amount, Acc2 receiver) {
+    public void sendLoad(int amount, Acc receiver) {
         sendLoad((double) amount, receiver);
     }
 
