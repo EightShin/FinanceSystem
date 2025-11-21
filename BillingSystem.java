@@ -13,7 +13,7 @@ public class BillingSystem {
             System.out.println("3. School/STI");
             System.out.println("4. Return to Account Menu");
             System.out.print("Choose billing option: ");
-            
+
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -54,7 +54,7 @@ public class BillingSystem {
             System.out.println("Insufficient balance! Payment failed.");
             System.out.printf("Your current balance: ₱%.2f%n", acc.getBalance());
             System.out.printf("Amount needed: ₱%.2f%n", totalAmount);
-            
+
         } else {
 
             acc.withdraw(totalAmount);

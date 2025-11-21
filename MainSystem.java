@@ -70,7 +70,7 @@ public class MainSystem {
         }
     }
 
-  public static void mainMenu(Acc2 acc) {
+    public static void mainMenu(Acc2 acc) {
     while (true) {
         System.out.println("\n--- ACCOUNT MENU ---");
         System.out.println("1. Deposit");
@@ -78,8 +78,8 @@ public class MainSystem {
         System.out.println("3. Check Balance");
         System.out.println("4. Transfer");
         System.out.println("5. Send Load");
-        System.out.println("6. Billing");       
-        System.out.println("7. Logout");        
+        System.out.println("6. Billing");
+        System.out.println("7. Logout");
         System.out.println("8. Check Load Balance");
         System.out.print("Choose: ");
         int choice = one.nextInt();
@@ -167,5 +167,4 @@ public class MainSystem {
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
     sender.sendLoad(amount, receiver);
     }
-    
 }
