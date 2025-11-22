@@ -1,4 +1,4 @@
-import java.util.Scanner;
+    import java.util.Scanner;
 
 public class BillingSystem {
     private static final double TAX_RATE = 0.01; 
@@ -6,6 +6,7 @@ public class BillingSystem {
     public static void processBilling(Acc acc, Scanner scanner) {
 
         while (true) {
+
             System.out.println("\n=== BILLING MENU ===");
             System.out.println("Note: All bills include 1% taxation");
             System.out.println("1. Wifi/PLDT");
@@ -31,6 +32,7 @@ public class BillingSystem {
     }
 
     protected static void payBill(Acc acc, Scanner scanner, String billType) {
+            
         System.out.print("Enter " + billType + " bill amount: ₱");
         double billAmount = scanner.nextDouble();
         scanner.nextLine();
