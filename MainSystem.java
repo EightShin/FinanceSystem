@@ -6,12 +6,15 @@ public class MainSystem {
     static HashMap<String, Acc2> Data = new HashMap<>();
 
     public static void main(String[] args) {
+
         while (true) {
+
             System.out.println("\nMain Menu:");
             System.out.println("1. Create Account");
             System.out.println("2. Login");
             System.out.println("3. Exit");
             System.out.print("Choose: ");
+
             int choice = one.nextInt();
             one.nextLine();
 
@@ -54,9 +57,11 @@ public class MainSystem {
     }
 
     public static void login () {
+
         System.out.print("Enter username: ");
         String username = one.nextLine();
         System.out.print("Enter 4-digit PIN: ");
+
         int pin = one.nextInt();
         one.nextLine();
 
@@ -71,7 +76,9 @@ public class MainSystem {
     }
 
     public static void mainMenu(Acc2 acc) {
+
     while (true) {
+        
         System.out.println("\n--- ACCOUNT MENU ---");
         System.out.println("1. Deposit");
         System.out.println("2. Withdraw");
@@ -82,6 +89,7 @@ public class MainSystem {
         System.out.println("7. Logout");
         System.out.println("8. Check Load Balance");
         System.out.print("Choose: ");
+
         int choice = one.nextInt();
         one.nextLine();
 
