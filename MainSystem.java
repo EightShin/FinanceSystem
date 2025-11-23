@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class MainSystem {
+    static desrecorder cv = new desrecorder();
     static Scanner one = new Scanner(System.in);
     static HashMap<String, Acc2> Data = new HashMap<>();
 
@@ -53,6 +54,8 @@ public class MainSystem {
         }
 
         Data.put(username, new Acc2(username, pin));
+        String a = Integer.toString(pin);
+        cv.AssignList(username, a); // List Creation  >w<
         System.out.println("Account created successfully!");
     }
 
@@ -88,6 +91,7 @@ public class MainSystem {
         System.out.println("6. Billing");
         System.out.println("7. Logout");
         System.out.println("8. Check Load Balance");
+        System.out.println("9. Check History");
         System.out.print("Choose: ");
 
         int choice = one.nextInt();
@@ -99,12 +103,14 @@ public class MainSystem {
                 double amount = one.nextDouble();
                 one.nextLine();
                 acc.deposit(amount);
+                cv.AddHistory(acc.getUsername(), " :Deposit: + ", amount);
             }
             case 2 -> {
                 System.out.print("Enter amount to withdraw: ");
                 double amount = one.nextDouble();
                 one.nextLine();
                 acc.withdraw(amount);
+                cv.AddHistory(acc.getUsername(), " :Withdraw: - ", amount);
             }
             case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
             case 4 -> transfer(acc);
@@ -135,6 +141,9 @@ public class MainSystem {
                 return;
             }
             case 8 -> System.out.printf("Your load balance is: ₱%.2f%n", acc.getLoadBalance());
+            case 9 -> {
+                cv.ViewHistory(acc.getUsername());
+            }
             default -> System.out.println("Invalid option! Please try again.");
         }
     }
