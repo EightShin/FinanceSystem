@@ -83,7 +83,7 @@ public class MainSystem {
     while (true) {
         
         System.out.println("\n--- ACCOUNT MENU ---");
-        System.out.println("1. Deposit");
+        System.out.println("1. Cash-In");
         System.out.println("2. Withdraw");
         System.out.println("3. Check Balance");
         System.out.println("4. Transfer");
