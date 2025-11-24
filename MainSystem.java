@@ -135,7 +135,7 @@ public class MainSystem {
 
                 loadTransfer(acc, receiver, loadAmt);
             }
-            case 6 -> BillingSystem.processBilling(acc, one);  
+            case 6 -> BillingSystem.processBilling(acc, one, cv);  
             case 7 -> {
                 System.out.println("Logging out...");
                 return;
@@ -178,10 +178,26 @@ public class MainSystem {
     sender.withdraw(amt);
     receiver.deposit(amt);
 
+    // Record history for both parties
+    cv.AddHistory(sender.getUsername(), " :Transfer Out: - ", amt);
+    cv.AddHistory(receiver.getUsername(), " :Transfer In: + ", amt);
+
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     }
 
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
-    sender.sendLoad(amount, receiver);
+        if (amount <= 0) {
+            System.out.println("Load amount must be positive! Please try again.");
+            return;
+        }
+        if (sender.getBalance() < amount) {
+            System.out.println("Insufficient balance to send load! Please try again.");
+            return;
+        }
+
+        sender.sendLoad(amount, receiver);
+        // Record history for sender and receiver
+        cv.AddHistory(sender.getUsername(), " :Send Load: - ", amount);
+        cv.AddHistory(receiver.getUsername(), " :Receive Load: + ", amount);
     }
 }

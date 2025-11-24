@@ -3,7 +3,7 @@
 public class BillingSystem {
     private static final double TAX_RATE = 0.01; 
 
-    public static void processBilling(Acc acc, Scanner scanner) {
+    public static void processBilling(Acc acc, Scanner scanner, desrecorder cv) {
 
         while (true) {
 
@@ -19,9 +19,9 @@ public class BillingSystem {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> payBill(acc, scanner, "Wifi/PLDT");
-                case 2 -> payBill(acc, scanner, "Electricity/Meralco");
-                case 3 -> payBill(acc, scanner, "School/STI");
+                case 1 -> payBill(acc, scanner, "Wifi/PLDT", cv);
+                case 2 -> payBill(acc, scanner, "Electricity/Meralco", cv);
+                case 3 -> payBill(acc, scanner, "School/STI", cv);
                 case 4 -> {
                     System.out.println("Returning to Account Menu...");
                     return;
@@ -31,8 +31,7 @@ public class BillingSystem {
         }
     }
 
-    protected static void payBill(Acc acc, Scanner scanner, String billType) {
-            
+    protected static void payBill(Acc acc, Scanner scanner, String billType, desrecorder cv) {
         System.out.print("Enter " + billType + " bill amount: ₱");
         double billAmount = scanner.nextDouble();
         scanner.nextLine();
@@ -60,6 +59,9 @@ public class BillingSystem {
         } else {
 
             acc.withdraw(totalAmount);
+            if (cv != null) {
+                cv.AddHistory(acc.getUsername(), " :Billing: - ", totalAmount);
+            }
             System.out.println("Payment successful!!!");
             System.out.println("1% tax has been added to your bill.");
             System.out.printf("Remaining balance: ₱%.2f%n", acc.getBalance());
