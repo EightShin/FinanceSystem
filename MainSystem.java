@@ -6,6 +6,31 @@ public class MainSystem {
     static Scanner one = new Scanner(System.in);
     static HashMap<String, Acc2> Data = new HashMap<>();
 
+    // Helper methods to safely read numbers and avoid InputMismatchException
+    private static int readIntSafe() {
+        try {
+            int v = one.nextInt();
+            one.nextLine();
+            return v;
+        } catch (java.util.InputMismatchException e) {
+            one.nextLine();
+            System.out.println("Invalid input. Please enter a valid integer.");
+            return Integer.MIN_VALUE;
+        }
+    }
+
+    private static double readDoubleSafe() {
+        try {
+            double v = one.nextDouble();
+            one.nextLine();
+            return v;
+        } catch (java.util.InputMismatchException e) {
+            one.nextLine();
+            System.out.println("Invalid input. Please enter a valid number.");
+            return Double.NaN;
+        }
+    }
+
     public static void main(String[] args) {
 
         while (true) {
@@ -16,8 +41,8 @@ public class MainSystem {
             System.out.println("3. Exit");
             System.out.print("Choose: ");
 
-            int choice = one.nextInt();
-            one.nextLine();
+            int choice = readIntSafe();
+            if (choice == Integer.MIN_VALUE) continue;
 
             switch (choice) {
                 case 1 -> createAccount();
@@ -45,8 +70,11 @@ public class MainSystem {
         }
 
         System.out.print("Enter 4-digit PIN: ");
-        int pin = one.nextInt();
-        one.nextLine();
+        int pin = readIntSafe();
+        if (pin == Integer.MIN_VALUE) {
+            System.out.println("Account creation cancelled due to invalid PIN input.");
+            return;
+        }
 
         if (pin < 1000 || pin > 9999) {
             System.out.println("Invalid PIN! Must be 4 digits. Please try again.");
@@ -65,8 +93,11 @@ public class MainSystem {
         String username = one.nextLine();
         System.out.print("Enter 4-digit PIN: ");
 
-        int pin = one.nextInt();
-        one.nextLine();
+        int pin = readIntSafe();
+        if (pin == Integer.MIN_VALUE) {
+            System.out.println("Login cancelled due to invalid PIN input.");
+            return;
+        }
 
         Acc2 acc = Data.get(username);
 
@@ -94,21 +125,21 @@ public class MainSystem {
         System.out.println("9. Check History");
         System.out.print("Choose: ");
 
-        int choice = one.nextInt();
-        one.nextLine();
+        int choice = readIntSafe();
+        if (choice == Integer.MIN_VALUE) continue;
 
         switch (choice) {
             case 1 -> {
                 System.out.print("Enter amount to deposit: ");
-                double amount = one.nextDouble();
-                one.nextLine();
+                double amount = readDoubleSafe();
+                if (Double.isNaN(amount)) continue;
                 acc.deposit(amount);
                 cv.AddHistory(acc.getUsername(), " :Deposit: + ", amount);
             }
             case 2 -> {
                 System.out.print("Enter amount to withdraw: ");
-                double amount = one.nextDouble();
-                one.nextLine();
+                double amount = readDoubleSafe();
+                if (Double.isNaN(amount)) continue;
                 acc.withdraw(amount);
                 cv.AddHistory(acc.getUsername(), " :Withdraw: - ", amount);
             }
@@ -130,8 +161,8 @@ public class MainSystem {
                 }
 
                 System.out.print("Enter load amount: ");
-                double loadAmt = one.nextDouble();
-                one.nextLine();
+                double loadAmt = readDoubleSafe();
+                if (Double.isNaN(loadAmt)) continue;
 
                 loadTransfer(acc, receiver, loadAmt);
             }
@@ -164,8 +195,11 @@ public class MainSystem {
         return; }
 
     System.out.print("Amount to transfer: ");
-    double amt = one.nextDouble();
-    one.nextLine();
+    double amt = readDoubleSafe();
+    if (Double.isNaN(amt)) {
+        System.out.println("Transfer cancelled due to invalid amount input.");
+        return;
+    }
 
     if (amt <= 0) {
         System.out.println("Invalid! Amount must be positive! Please try again.");
