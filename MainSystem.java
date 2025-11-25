@@ -1,18 +1,15 @@
-import java.util.HashMap;
-import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class MainSystem {
     static desrecorder cv = new desrecorder();
     static Scanner one = new Scanner(System.in);
     static HashMap<String, Acc2> Data = new HashMap<>();
 
-    static LocalDateTime currentTime = LocalDateTime.now();
-    static DateTimeFormatter adjust = DateTimeFormatter.ofPattern("HH:mm:ss");
-    static String time = currentTime.format(adjust);
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // Helper methods to safely read numbers and avoid InputMismatchException
     private static int readIntSafe() {
         try {
             int v = one.nextInt();
@@ -89,7 +86,7 @@ public class MainSystem {
 
         Data.put(username, new Acc2(username, pin));
         String a = Integer.toString(pin);
-        cv.AssignList(username, a); // List Creation  >w<
+        cv.AssignList(username, a); 
         System.out.println("Account created successfully!");
     }
 
@@ -140,14 +137,16 @@ public class MainSystem {
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
                 acc.deposit(amount);
-                cv.AddHistory(acc.getUsername(), " :Deposit: + ", amount, time);
+                String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+                cv.AddHistory(acc.getUsername(), ":Deposit: +", amount, currentTime);
             }
             case 2 -> {
                 System.out.print("Enter amount to withdraw: ");
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
                 acc.withdraw(amount);
-                cv.AddHistory(acc.getUsername(), " :Withdraw: - ", amount, time);
+                String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+                cv.AddHistory(acc.getUsername(), ":Withdraw: -", amount, currentTime);
             }
             case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
             case 4 -> transfer(acc);
@@ -218,9 +217,9 @@ public class MainSystem {
     sender.withdraw(amt);
     receiver.deposit(amt);
 
-    // Record history for both parties
-    cv.AddHistory(sender.getUsername(), " :Transfer Out: - ", amt, time);
-    cv.AddHistory(receiver.getUsername(), " :Transfer In: + ", amt, time);
+    String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+    cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
+    cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
 
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     }
@@ -236,8 +235,9 @@ public class MainSystem {
         }
 
         sender.sendLoad(amount, receiver);
-        // Record history for sender and receiver
-        cv.AddHistory(sender.getUsername(), " :Send Load: - ", amount, time);
-        cv.AddHistory(receiver.getUsername(), " :Receive Load: + ", amount, time);
+        
+        String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+        cv.AddHistory(sender.getUsername(), ":Send Load: -", amount, currentTime);
+        cv.AddHistory(receiver.getUsername(), ":Receive Load: +", amount, currentTime);
     }
 }

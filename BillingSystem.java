@@ -60,7 +60,8 @@ public class BillingSystem {
 
             acc.withdraw(totalAmount);
             if (cv != null) {
-                cv.AddHistory(acc.getUsername(), " :Billing: - ", totalAmount, null);
+                String currentTime = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                cv.AddHistory(acc.getUsername(), ":Billing: -", totalAmount, currentTime);
             }
             System.out.println("Payment successful!!!");
             System.out.println("1% tax has been added to your bill.");
