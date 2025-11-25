@@ -82,7 +82,7 @@ public class MainSystem {
             }
 
             if (username.length() < 3 || !username.matches("^[A-Za-z0-9_-]+$") || !username.matches(".*[A-Za-z].*")) {
-                System.out.println("Invalid username! Must be 3+ chars, contain at least one letter, and only letters/digits/_/-");
+                System.out.println("Invalid username! Must be 3+ chars, contain at least one letter, and only letters/digits/Sysmbols(_ or -)/");
                 continue;
             }
 
@@ -277,7 +277,7 @@ public class MainSystem {
     cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
     cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
 
-    System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
+    System.out.printf("Successfully transferred Php %.2f to %s%n", amt, targetName);
     delay(1000);
     }
 

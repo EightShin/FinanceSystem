@@ -95,7 +95,7 @@ public class BillingSystem {
                 }
                 System.out.println("Payment successful!!!");
                 System.out.println("1% tax has been added to your bill.");
-                System.out.printf("Remaining balance: ₱%.2f%n", acc.getBalance());
+                System.out.printf("Remaining balance: Php %.2f%n", acc.getBalance());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
