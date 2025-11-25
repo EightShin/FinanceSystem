@@ -1,10 +1,16 @@
 import java.util.HashMap;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainSystem {
     static desrecorder cv = new desrecorder();
     static Scanner one = new Scanner(System.in);
     static HashMap<String, Acc2> Data = new HashMap<>();
+
+    static LocalDateTime currentTime = LocalDateTime.now();
+    static DateTimeFormatter adjust = DateTimeFormatter.ofPattern("HH:mm:ss");
+    static String time = currentTime.format(adjust);
 
     // Helper methods to safely read numbers and avoid InputMismatchException
     private static int readIntSafe() {
@@ -134,14 +140,14 @@ public class MainSystem {
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
                 acc.deposit(amount);
-                cv.AddHistory(acc.getUsername(), " :Deposit: + ", amount);
+                cv.AddHistory(acc.getUsername(), " :Deposit: + ", amount, time);
             }
             case 2 -> {
                 System.out.print("Enter amount to withdraw: ");
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
                 acc.withdraw(amount);
-                cv.AddHistory(acc.getUsername(), " :Withdraw: - ", amount);
+                cv.AddHistory(acc.getUsername(), " :Withdraw: - ", amount, time);
             }
             case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
             case 4 -> transfer(acc);
@@ -213,8 +219,8 @@ public class MainSystem {
     receiver.deposit(amt);
 
     // Record history for both parties
-    cv.AddHistory(sender.getUsername(), " :Transfer Out: - ", amt);
-    cv.AddHistory(receiver.getUsername(), " :Transfer In: + ", amt);
+    cv.AddHistory(sender.getUsername(), " :Transfer Out: - ", amt, time);
+    cv.AddHistory(receiver.getUsername(), " :Transfer In: + ", amt, time);
 
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     }
@@ -231,7 +237,7 @@ public class MainSystem {
 
         sender.sendLoad(amount, receiver);
         // Record history for sender and receiver
-        cv.AddHistory(sender.getUsername(), " :Send Load: - ", amount);
-        cv.AddHistory(receiver.getUsername(), " :Receive Load: + ", amount);
+        cv.AddHistory(sender.getUsername(), " :Send Load: - ", amount, time);
+        cv.AddHistory(receiver.getUsername(), " :Receive Load: + ", amount, time);
     }
 }

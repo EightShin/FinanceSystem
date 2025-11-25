@@ -18,18 +18,9 @@ List<String> list;
         return list;
     }
 
-    public List<String> printList() {
-        StringBuilder vt = new StringBuilder();
-        List<String> res = list;
-        for(String elm : res) {
-            vt.append(elm).append("\n");
-        } 
-        return res; //attempt to vertical. still does not work
-        
-    }
 
-    public void addHist(String sp, double Amount) {
-        String esp = sp + " " + Double.toString(Amount);
+    public void addHist(String sp, double Amount, String time) {
+        String esp = sp + " " + Double.toString(Amount) + " " + time;
         list.add(esp);
         
     }

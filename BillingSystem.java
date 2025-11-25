@@ -60,7 +60,7 @@ public class BillingSystem {
 
             acc.withdraw(totalAmount);
             if (cv != null) {
-                cv.AddHistory(acc.getUsername(), " :Billing: - ", totalAmount);
+                cv.AddHistory(acc.getUsername(), " :Billing: - ", totalAmount, null);
             }
             System.out.println("Payment successful!!!");
             System.out.println("1% tax has been added to your bill.");

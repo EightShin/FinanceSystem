@@ -16,20 +16,22 @@ public class desrecorder   {
 
     }
 
-    public void AddHistory(String Addr, String Type, double Amount) {   
+    public void AddHistory(String Addr, String Type, double Amount, String time) {   
 
-            mpList.get(Addr).addHist(Type, Amount);
+            mpList.get(Addr).addHist(Type, Amount, time);
             
         }
 
         public void ViewHistory(String Addr) {
 
-            System.out.println("Looking for " + Addr + "...");
+            System.out.println("Looking for " + Addr + "...\n");
 
             if(mpList.containsKey(Addr)) {
 
-                List<String> viewList = mpList.get(Addr).printList(); //get designated list -w-
-            System.out.println(viewList.toString());
+                List<String> viewList = mpList.get(Addr).getList(); //get designated list -w-
+                for(String sp : viewList) {
+                    System.out.println(sp);
+                }
 
             } else {
                 System.out.println("Invalid, No View. ");
