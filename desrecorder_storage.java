@@ -14,13 +14,13 @@ List<String> list;
     }
 
     public List<String> getList() {
-        
+
         return list;
     }
 
     public void addHist(String sp, double Amount, String time) {
         String esp = String.format("%s | %s | Php %.2f", time, sp.trim(), Amount);
         list.add(esp);
-        
+
     }
 }
