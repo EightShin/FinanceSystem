@@ -29,10 +29,11 @@ public class desrecorder   {
             if(mpList.containsKey(Addr)) {
 
                 List<String> viewList = mpList.get(Addr).getList(); //get designated list -w-
+                System.out.println("---------------------------------------------");
                 for(String sp : viewList) {
                     System.out.println(sp);
                 }
-
+                System.out.println("---------------------------------------------");
             } else {
                 System.out.println("Invalid, No View. ");
             }
