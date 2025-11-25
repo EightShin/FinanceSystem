@@ -3,6 +3,18 @@
 public class BillingSystem {
     private static final double TAX_RATE = 0.01; 
 
+    private static double readDoubleSafe(Scanner scanner) {
+        try {
+            double v = scanner.nextDouble();
+            scanner.nextLine();
+            return v;
+        } catch (java.util.InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println("Invalid input. Please enter a valid number.");
+            return Double.NaN;
+        }
+    }
+
     public static void processBilling(Acc acc, Scanner scanner, desrecorder cv) {
 
         while (true) {
@@ -32,9 +44,16 @@ public class BillingSystem {
     }
 
     protected static void payBill(Acc acc, Scanner scanner, String billType, desrecorder cv) {
-        System.out.print("Enter " + billType + " bill amount: ₱");
-        double billAmount = scanner.nextDouble();
-        scanner.nextLine();
+        double billAmount;
+        while (true) {
+            System.out.print("Enter " + billType + " bill amount: ₱");
+            billAmount = readDoubleSafe(scanner);
+            if (Double.isNaN(billAmount)) {
+                System.out.println("Please try again.");
+                continue;
+            }
+            break;
+        }
 
         if (billAmount <= 0) {
             System.out.println("Invalid! Bill amount must be positive! Please try again.");
@@ -58,14 +77,23 @@ public class BillingSystem {
 
         } else {
 
-            acc.withdraw(totalAmount);
-            if (cv != null) {
-                String currentTime = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                cv.AddHistory(acc.getUsername(), ":Billing: -", totalAmount, currentTime);
+            boolean ok = acc.withdraw(totalAmount);
+            if (ok) {
+                if (cv != null) {
+                    String currentTime = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    cv.AddHistory(acc.getUsername(), ":Billing: -", totalAmount, currentTime);
+                }
+                System.out.println("Payment successful!!!");
+                System.out.println("1% tax has been added to your bill.");
+                System.out.printf("Remaining balance: ₱%.2f%n", acc.getBalance());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                System.out.println("Payment failed during withdrawal. No changes made.");
             }
-            System.out.println("Payment successful!!!");
-            System.out.println("1% tax has been added to your bill.");
-            System.out.printf("Remaining balance: ₱%.2f%n", acc.getBalance());
         }
     }
 }

@@ -11,9 +11,9 @@ public abstract class Acc {
         this.loadBalance = 0.0;
     }
 
-    public abstract void deposit (double amount);
-    public abstract void withdraw (double amount);
-    public abstract void sendLoad(double amount, Acc receiver);
+    public abstract boolean deposit (double amount);
+    public abstract boolean withdraw (double amount);
+    public abstract boolean sendLoad(double amount, Acc receiver);
 
     public double getLoadBalance() {
         return loadBalance;

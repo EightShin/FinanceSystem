@@ -4,50 +4,60 @@ public class Acc2 extends Acc {
     }
 
     @Override
-    public void deposit (double amount) {
+    public boolean deposit (double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid deposit amount! Must be greater than 0.");
+            return false;
+        }
         balance += amount;
         System.out.printf("Deposited ₱%.2f%n", amount);
+        return true;
     }
 
-    public void deposit (int amount) {
-        deposit((double) amount);
+    public boolean deposit (int amount) {
+        return deposit((double) amount);
     }
 
     @Override
-    public void withdraw (double amount) {
+    public boolean withdraw (double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid withdraw amount! Must be greater than 0.");
+            return false;
+        }
         if (amount > balance) {
             System.out.println("Insufficient balance!");
-        } else {
-            balance -= amount;
-            System.out.printf("Withdrew ₱%.2f%n", amount);
+            return false;
         }
+        balance -= amount;
+        System.out.printf("Withdrew ₱%.2f%n", amount);
+        return true;
     }
 
     @Override
-    public void sendLoad(double amount, Acc receiver) {
-
-            if (amount <= 0) {
-        System.out.println("Load amount must be positive!");
-        return;
+    public boolean sendLoad(double amount, Acc receiver) {
+        if (amount <= 0) {
+            System.out.println("Load amount must be positive!");
+            return false;
         }
         if (amount > balance) {
-        System.out.println("Insufficient balance to send load!");
-        return;
+            System.out.println("Insufficient balance to send load!");
+            return false;
         }
 
-    balance -= amount;
-    receiver.loadBalance += amount;
+        balance -= amount;
+        receiver.loadBalance += amount;
 
-    System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
+        System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
+        return true;
     }
 
-    public void sendLoad(int amount, Acc receiver) {
-        sendLoad((double) amount, receiver);
+    public boolean sendLoad(int amount, Acc receiver) {
+        return sendLoad((double) amount, receiver);
     }
 
 
-    public void withdraw (int amount) {
-        withdraw((double) amount);
+    public boolean withdraw (int amount) {
+        return withdraw((double) amount);
     }
 
     public double getBalance () {

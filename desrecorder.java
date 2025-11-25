@@ -28,7 +28,7 @@ public class desrecorder   {
 
             if(mpList.containsKey(Addr)) {
 
-                List<String> viewList = mpList.get(Addr).getList(); //get designated list -w-
+                List<String> viewList = mpList.get(Addr).getList(); 
                 for(String sp : viewList) {
                     System.out.println(sp);
                 }

@@ -64,29 +64,66 @@ public class MainSystem {
             System.out.println("Account limit reached! (Max: 5 users)");
             return;
         }
+        String username;
+        while (true) {
+            System.out.print("Enter username (or type 'cancel' to go back): ");
+            username = one.nextLine();
+            if (username == null) username = "";
+            username = username.trim();
 
-        System.out.print("Enter username: ");
-        String username = one.nextLine();
-        if (Data.containsKey(username)) {
-            System.out.println("Username already exists!");
-            return;
+            if (username.equalsIgnoreCase("cancel")) {
+                System.out.println("Account creation cancelled.");
+                return;
+            }
+
+            if (username.isEmpty()) {
+                System.out.println("Invalid username! Username cannot be empty.");
+                continue;
+            }
+
+            if (username.length() < 3 || !username.matches("^[A-Za-z0-9_-]+$") || !username.matches(".*[A-Za-z].*")) {
+                System.out.println("Invalid username! Must be 3+ chars, contain at least one letter, and only letters/digits/_/-");
+                continue;
+            }
+
+            if (Data.containsKey(username)) {
+                System.out.println("Username already exists! Please choose another.");
+                continue;
+            }
+
+            break; 
         }
 
-        System.out.print("Enter 4-digit PIN: ");
-        int pin = readIntSafe();
-        if (pin == Integer.MIN_VALUE) {
-            System.out.println("Account creation cancelled due to invalid PIN input.");
-            return;
-        }
+        int pin;
+        while (true) {
+            System.out.print("Enter 4-digit PIN (or type 'cancel' to go back): ");
+            String pinInput = one.nextLine();
+            if (pinInput == null) pinInput = "";
+            pinInput = pinInput.trim();
 
-        if (pin < 1000 || pin > 9999) {
-            System.out.println("Invalid PIN! Must be 4 digits. Please try again.");
-            return;
+            if (pinInput.equalsIgnoreCase("cancel")) {
+                System.out.println("Account creation cancelled.");
+                return;
+            }
+
+            try {
+                pin = Integer.parseInt(pinInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid PIN input. Please enter numeric 4 digits.");
+                continue;
+            }
+
+            if (pin < 1000 || pin > 9999) {
+                System.out.println("Invalid PIN! Must be 4 digits. Please try again.");
+                continue;
+            }
+
+            break; 
         }
 
         Data.put(username, new Acc2(username, pin));
         String a = Integer.toString(pin);
-        cv.AssignList(username, a); 
+        cv.AssignList(username, a);
         System.out.println("Account created successfully!");
     }
 
@@ -116,7 +153,7 @@ public class MainSystem {
 
     while (true) {
         
-        System.out.println("\n--- ACCOUNT MENU ---");
+        System.out.println("--- ACCOUNT MENU ---");
         System.out.println("1. Cash-In");
         System.out.println("2. Withdraw");
         System.out.println("3. Check Balance");
@@ -126,6 +163,7 @@ public class MainSystem {
         System.out.println("7. Logout");
         System.out.println("8. Check Load Balance");
         System.out.println("9. Check History");
+        System.out.println("10. Delete Account");
         System.out.print("Choose: ");
 
         int choice = readIntSafe();
@@ -136,17 +174,23 @@ public class MainSystem {
                 System.out.print("Enter amount to deposit: ");
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
-                acc.deposit(amount);
-                String currentTime = LocalDateTime.now().format(dateTimeFormatter);
-                cv.AddHistory(acc.getUsername(), ":Deposit: +", amount, currentTime);
+                boolean depOk = acc.deposit(amount);
+                if (depOk) {
+                    String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+                    cv.AddHistory(acc.getUsername(), ":Deposit: +", amount, currentTime);
+                    delay(1000);
+                }
             }
             case 2 -> {
                 System.out.print("Enter amount to withdraw: ");
                 double amount = readDoubleSafe();
                 if (Double.isNaN(amount)) continue;
-                acc.withdraw(amount);
-                String currentTime = LocalDateTime.now().format(dateTimeFormatter);
-                cv.AddHistory(acc.getUsername(), ":Withdraw: -", amount, currentTime);
+                boolean wOk = acc.withdraw(amount);
+                if (wOk) {
+                    String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+                    cv.AddHistory(acc.getUsername(), ":Withdraw: -", amount, currentTime);
+                    delay(1000);
+                }
             }
             case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
             case 4 -> transfer(acc);
@@ -180,6 +224,7 @@ public class MainSystem {
             case 9 -> {
                 cv.ViewHistory(acc.getUsername());
             }
+            case 10 -> deleteAccount(acc);
             default -> System.out.println("Invalid option! Please try again.");
         }
     }
@@ -214,14 +259,26 @@ public class MainSystem {
         System.out.println("Invalid! Insufficient balance! Please try again.");
         return; }
 
-    sender.withdraw(amt);
-    receiver.deposit(amt);
+    boolean withdrawn = sender.withdraw(amt);
+    if (!withdrawn) {
+        System.out.println("Transfer failed during withdrawal.");
+        return;
+    }
+
+    boolean deposited = receiver.deposit(amt);
+    if (!deposited) {
+        
+        System.out.println("Transfer failed during deposit. Rolling back.");
+        sender.deposit(amt);
+        return;
+    }
 
     String currentTime = LocalDateTime.now().format(dateTimeFormatter);
     cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
     cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
 
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
+    delay(1000);
     }
 
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
@@ -234,10 +291,38 @@ public class MainSystem {
             return;
         }
 
-        sender.sendLoad(amount, receiver);
-        
-        String currentTime = LocalDateTime.now().format(dateTimeFormatter);
-        cv.AddHistory(sender.getUsername(), ":Send Load: -", amount, currentTime);
-        cv.AddHistory(receiver.getUsername(), ":Receive Load: +", amount, currentTime);
+        boolean ok = sender.sendLoad(amount, receiver);
+        if (ok) {
+            String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+            cv.AddHistory(sender.getUsername(), ":Send Load: -", amount, currentTime);
+            cv.AddHistory(receiver.getUsername(), ":Receive Load: +", amount, currentTime);
+            delay(1000);
+        }
+    }
+
+    private static void delay(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private static void deleteAccount(Acc2 acc) {
+        System.out.println("\n=== DELETE ACCOUNT ===");
+        System.out.println("WARNING: This action cannot be undone!");
+        System.out.println("To confirm deletion, type your username: " + acc.getUsername());
+        System.out.print("Type confirmation (or press Enter to cancel): ");
+        String confirmation = one.nextLine().trim();
+
+        if (!confirmation.equals(acc.getUsername())) {
+            System.out.println("Deletion cancelled.");
+            return;
+        }
+
+        Data.remove(acc.getUsername());
+        System.out.println("Account deleted successfully!");
+        System.out.println("Logging out...");
+        delay(1000);
     }
 }
