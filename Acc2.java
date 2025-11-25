@@ -10,8 +10,12 @@ public class Acc2 extends Acc {
             return false;
         }
         balance += amount;
+<<<<<<< HEAD
         System.out.printf("Deposited ₱%.2f%n", amount);
         return true;
+=======
+        System.out.printf("Deposited Php %.2f%n", amount);
+>>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
     }
 
     public boolean deposit (int amount) {
@@ -26,7 +30,13 @@ public class Acc2 extends Acc {
         }
         if (amount > balance) {
             System.out.println("Insufficient balance!");
+<<<<<<< HEAD
             return false;
+=======
+        } else {
+            balance -= amount;
+            System.out.printf("Withdrew Php %.2f%n", amount);
+>>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
         }
         balance -= amount;
         System.out.printf("Withdrew ₱%.2f%n", amount);
@@ -47,8 +57,12 @@ public class Acc2 extends Acc {
         balance -= amount;
         receiver.loadBalance += amount;
 
+<<<<<<< HEAD
         System.out.printf("Successfully sent ₱%.2f load to %s%n", amount, receiver.getUsername());
         return true;
+=======
+    System.out.printf("Successfully sent Php %.2f load to %s%n", amount, receiver.getUsername());
+>>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
     }
 
     public boolean sendLoad(int amount, Acc receiver) {

@@ -192,7 +192,7 @@ public class MainSystem {
                     delay(1000);
                 }
             }
-            case 3 -> System.out.printf("Your balance is: ₱%.2f%n", acc.getBalance());
+            case 3 -> System.out.printf("Your balance is: Php %.2f%n", acc.getBalance());
             case 4 -> transfer(acc);
             case 5 -> {
                 System.out.print("Enter recipient username: ");
@@ -220,7 +220,7 @@ public class MainSystem {
                 System.out.println("Logging out...");
                 return;
             }
-            case 8 -> System.out.printf("Your load balance is: ₱%.2f%n", acc.getLoadBalance());
+            case 8 -> System.out.printf("Your load balance is: Php %.2f%n", acc.getLoadBalance());
             case 9 -> {
                 cv.ViewHistory(acc.getUsername());
             }
@@ -277,8 +277,12 @@ public class MainSystem {
     cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
     cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
 
+<<<<<<< HEAD
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     delay(1000);
+=======
+    System.out.printf("Successfully transferred Php %.2f to %s%n", amt, targetName);
+>>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
     }
 
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {

@@ -28,11 +28,16 @@ public class desrecorder   {
 
             if(mpList.containsKey(Addr)) {
 
+<<<<<<< HEAD
                 List<String> viewList = mpList.get(Addr).getList(); 
+=======
+                List<String> viewList = mpList.get(Addr).getList(); //get designated list -w-
+                System.out.println("---------------------------------------------");
+>>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
                 for(String sp : viewList) {
                     System.out.println(sp);
                 }
-
+                System.out.println("---------------------------------------------");
             } else {
                 System.out.println("Invalid, No View. ");
             }
