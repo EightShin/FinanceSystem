@@ -277,12 +277,8 @@ public class MainSystem {
     cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
     cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
 
-<<<<<<< HEAD
     System.out.printf("Successfully transferred ₱%.2f to %s%n", amt, targetName);
     delay(1000);
-=======
-    System.out.printf("Successfully transferred Php %.2f to %s%n", amt, targetName);
->>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
     }
 
     public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {

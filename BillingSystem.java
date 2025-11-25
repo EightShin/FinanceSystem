@@ -2,8 +2,6 @@
 
 public class BillingSystem {
     private static final double TAX_RATE = 0.01; 
-    
-    
 
     private static double readDoubleSafe(Scanner scanner) {
         try {
@@ -17,11 +15,20 @@ public class BillingSystem {
         }
     }
 
+    private static int readIntSafe(Scanner scanner) {
+        try {
+            int v = scanner.nextInt();
+            scanner.nextLine();
+            return v;
+        } catch (java.util.InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println("Invalid input. Please enter a valid integer.");
+            return Integer.MIN_VALUE;
+        }
+    }
+
     public static void processBilling(Acc acc, Scanner scanner, desrecorder cv) {
-        
-
         while (true) {
-
             System.out.println("\n=== BILLING MENU ===");
             System.out.println("Note: All bills include 1% taxation");
             System.out.println("1. Wifi/PLDT");
@@ -29,9 +36,9 @@ public class BillingSystem {
             System.out.println("3. School/STI");
             System.out.println("4. Return to Account Menu");
             System.out.print("Choose billing option: ");
-            
-                int choice = readIntSafe(scanner);
-                if (choice == Integer.MIN_VALUE) continue; 
+
+            int choice = readIntSafe(scanner);
+            if (choice == Integer.MIN_VALUE) continue;
 
             switch (choice) {
                 case 1 -> payBill(acc, scanner, "Wifi/PLDT", cv);
@@ -42,15 +49,11 @@ public class BillingSystem {
                     return;
                 }
                 default -> System.out.println("Invalid option! Please try again.");
-                 }
-            
-
             }
         }
-    
+    }
 
     protected static void payBill(Acc acc, Scanner scanner, String billType, desrecorder cv) {
-<<<<<<< HEAD
         double billAmount;
         while (true) {
             System.out.print("Enter " + billType + " bill amount: ₱");
@@ -60,13 +63,6 @@ public class BillingSystem {
                 continue;
             }
             break;
-=======
-        System.out.print("Enter " + billType + " bill amount: Php ");
-        double billAmount = readDoubleSafe(scanner);
-        if (Double.isNaN(billAmount)) {
-            System.out.println("Payment cancelled due to invalid input.");
-            return;
->>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
         }
 
         if (billAmount <= 0) {
@@ -108,38 +104,6 @@ public class BillingSystem {
             } else {
                 System.out.println("Payment failed during withdrawal. No changes made.");
             }
-<<<<<<< HEAD
-=======
-            System.out.println("Payment successful!!!");
-            System.out.println("1% tax has been added to your bill.");
-            System.out.printf("Remaining balance: Php %.2f%n", acc.getBalance());
-        }
-        
-    }
-
-    
-    private static int readIntSafe(Scanner scanner) {
-        try {
-            int v = scanner.nextInt();
-            scanner.nextLine();
-            return v;
-        } catch (java.util.InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Invalid input. Please enter a valid integer.");
-            return Integer.MIN_VALUE;
-        }
-    }
-
-    private static double readDoubleSafe(Scanner scanner) {
-        try {
-            double v = scanner.nextDouble();
-            scanner.nextLine();
-            return v;
-        } catch (java.util.InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Invalid input. Please enter a valid number.");
-            return Double.NaN;
->>>>>>> dab3f1519c4338d7effc7be8cd28aee27d07f6ba
         }
     }
 }
