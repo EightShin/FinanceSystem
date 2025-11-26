@@ -199,8 +199,6 @@ public class MainSystem {
                         cv.AddHistory(acc.getUsername(), ":Deposit: +", amount, currentTime);
                         delay(1000);
                         break;
-                    } else {
-                        
                     }
                 }
             }
@@ -226,7 +224,6 @@ public class MainSystem {
                         cv.AddHistory(acc.getUsername(), ":Withdraw: -", amount, currentTime);
                         delay(1000);
                         break;
-                    } else {
                     }
                 }
             }
@@ -389,12 +386,15 @@ public class MainSystem {
                         }
 
                         
-                        if (acc.withdraw(amount)) {
+                        boolean withdrawOk = acc.withdraw(amount);
+                        if (withdrawOk) {
                             wallet.rechargeWallet(amount);
                             String currentTime = LocalDateTime.now().format(dateTimeFormatter);
                             cv.AddHistory(acc.getUsername(), ":E-Wallet Recharge: -", amount, currentTime);
                             delay(1000);
                             break;
+                        } else {
+                            System.out.println("Recharge failed. Please try again.");
                         }
                     }
                 }

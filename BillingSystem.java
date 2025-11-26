@@ -54,38 +54,39 @@ public class BillingSystem {
     }
 
     protected static void payBill(Acc acc, Scanner scanner, String billType, desrecorder cv) {
-        double billAmount;
         while (true) {
-            System.out.print("Enter " + billType + " bill amount: ₱");
-            billAmount = readDoubleSafe(scanner);
-            if (Double.isNaN(billAmount)) {
-                System.out.println("Please try again.");
+            double billAmount;
+            while (true) {
+                System.out.print("Enter " + billType + " bill amount: ₱");
+                billAmount = readDoubleSafe(scanner);
+                if (Double.isNaN(billAmount)) {
+                    System.out.println("Please try again.");
+                    continue;
+                }
+                if (billAmount <= 0) {
+                    System.out.println("Invalid! Bill amount must be positive! Please try again.");
+                    continue;
+                }
+                break;
+            }
+
+            double taxAmount = billAmount * TAX_RATE;
+            double totalAmount = billAmount + taxAmount;
+
+            System.out.println("\n--- BILLING DETAILS ---");
+            System.out.printf("Bill Type: %s%n", billType);
+            System.out.printf("Bill Amount: Php %.2f%n", billAmount);
+            System.out.printf("Tax (1%%): Php %.2f%n", taxAmount);
+            System.out.printf("Total Amount (with 1%% tax): Php %.2f%n", totalAmount);
+            System.out.println("------------------------");
+
+            if (acc.getBalance() < totalAmount) {
+                System.out.println("Insufficient balance! Payment failed.");
+                System.out.printf("Your current balance: Php %.2f%n", acc.getBalance());
+                System.out.printf("Amount needed: Php %.2f%n", totalAmount);
+                System.out.println("Please try again with a different amount.");
                 continue;
             }
-            break;
-        }
-
-        if (billAmount <= 0) {
-            System.out.println("Invalid! Bill amount must be positive! Please try again.");
-            return;
-        }
-
-        double taxAmount = billAmount * TAX_RATE;
-        double totalAmount = billAmount + taxAmount;
-
-        System.out.println("\n--- BILLING DETAILS ---");
-        System.out.printf("Bill Type: %s%n", billType);
-        System.out.printf("Bill Amount: Php %.2f%n", billAmount);
-        System.out.printf("Tax (1%%): Php %.2f%n", taxAmount);
-        System.out.printf("Total Amount (with 1%% tax): Php %.2f%n", totalAmount);
-        System.out.println("------------------------");
-
-        if (acc.getBalance() < totalAmount) {
-            System.out.println("Insufficient balance! Payment failed.");
-            System.out.printf("Your current balance: Php %.2f%n", acc.getBalance());
-            System.out.printf("Amount needed: Php %.2f%n", totalAmount);
-
-        } else {
 
             boolean ok = acc.withdraw(totalAmount);
             if (ok) {
@@ -101,8 +102,10 @@ public class BillingSystem {
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
+                return;
             } else {
                 System.out.println("Payment failed during withdrawal. No changes made.");
+                return;
             }
         }
     }
