@@ -58,9 +58,10 @@ public class BillingSystem {
             double billAmount;
             while (true) {
                 System.out.print("Enter " + billType + " bill amount: ₱");
-                billAmount = readDoubleSafe(scanner);
+                String line = scanner.nextLine();
+                billAmount = InputUtils.parseAmountOrNaN(line);
                 if (Double.isNaN(billAmount)) {
-                    System.out.println("Please try again.");
+                    System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
                     continue;
                 }
                 if (billAmount <= 0) {

@@ -197,11 +197,9 @@ public class MainSystem {
                         System.out.println("Deposit cancelled.");
                         break;
                     }
-                    double amount;
-                    try {
-                        amount = Double.parseDouble(line);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a valid number.");
+                    double amount = InputUtils.parseAmountOrNaN(line);
+                    if (Double.isNaN(amount)) {
+                        System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
                         continue;
                     }
 
@@ -222,11 +220,9 @@ public class MainSystem {
                         System.out.println("Withdrawal cancelled.");
                         break;
                     }
-                    double amount;
-                    try {
-                        amount = Double.parseDouble(line);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a valid number.");
+                    double amount = InputUtils.parseAmountOrNaN(line);
+                    if (Double.isNaN(amount)) {
+                        System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
                         continue;
                     }
 
@@ -292,11 +288,9 @@ public class MainSystem {
             return;
         }
 
-        double amt;
-        try {
-            amt = Double.parseDouble(line);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
+        double amt = InputUtils.parseAmountOrNaN(line);
+        if (Double.isNaN(amt)) {
+            System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
             continue;
         }
 
@@ -382,11 +376,9 @@ public class MainSystem {
                             System.out.println("Recharge cancelled.");
                             break;
                         }
-                        double amount;
-                        try {
-                            amount = Double.parseDouble(line);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid input. Please enter a valid number.");
+                        double amount = InputUtils.parseAmountOrNaN(line);
+                        if (Double.isNaN(amount)) {
+                            System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
                             continue;
                         }
 
@@ -400,7 +392,6 @@ public class MainSystem {
                             continue;
                         }
 
-                        
                         System.out.printf("Recharge Php %.2f to E-Wallet? (yes/no): ", amount);
                         String confirmation = one.nextLine().trim().toLowerCase();
                         if (!confirmation.equals("yes")) {
@@ -408,7 +399,6 @@ public class MainSystem {
                             continue;
                         }
 
-                        
                         boolean withdrawOk = acc.withdraw(amount);
                         if (withdrawOk) {
                             wallet.rechargeWallet(amount);
