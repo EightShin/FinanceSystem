@@ -94,6 +94,16 @@ public class MainSystem {
                 return;
             }
 
+            if (pinInput.length() != 4) {
+                System.out.println("Invalid PIN! Must be exactly 4 digits. Please try again.");
+                continue;
+            }
+
+            if (!pinInput.matches("^[0-9]{4}$")) {
+                System.out.println("Invalid PIN input. Please enter numeric 4 digits.");
+                continue;
+            }
+
             try {
                 pin = Integer.parseInt(pinInput);
             } catch (NumberFormatException e) {
@@ -101,8 +111,8 @@ public class MainSystem {
                 continue;
             }
 
-            if (pin < 1000 || pin > 9999) {
-                System.out.println("Invalid PIN! Must be 4 digits. Please try again.");
+            if (pin == 0) {
+                System.out.println("Invalid PIN! PIN cannot be all zeros. Please try again.");
                 continue;
             }
 
@@ -114,6 +124,7 @@ public class MainSystem {
         cv.AssignList(username, a);
         eWallets.put(username, new EWallet());
         System.out.println("Account created successfully!");
+        delay(1000);
     }
 
     public static void login () {
@@ -147,6 +158,7 @@ public class MainSystem {
             Acc2 acc = Data.get(username);
             if (acc != null && acc.getPin() == pin) {
                 System.out.println("Login successful! Welcome, " + username + ".");
+                delay(1000);
                 mainMenu(acc);
                 return;
             } else {
@@ -227,7 +239,10 @@ public class MainSystem {
                     }
                 }
             }
-            case 3 -> System.out.printf("Your balance is: Php %.2f%n", acc.getBalance());
+            case 3 -> {
+                System.out.printf("Your balance is: Php %.2f%n", acc.getBalance());
+                delay(500);
+            }
             case 4 -> transfer(acc);
             case 5 -> processEWallet(acc);
             case 6 -> BillingSystem.processBilling(acc, one, cv);  
@@ -235,11 +250,19 @@ public class MainSystem {
                 System.out.println("Logging out...");
                 return;
             }
-            case 8 -> System.out.printf("Your load balance is: Php %.2f%n", acc.getLoadBalance());
+            case 8 -> {
+                System.out.printf("Your load balance is: Php %.2f%n", acc.getLoadBalance());
+                delay(500);
+            }
             case 9 -> {
                 cv.ViewHistory(acc.getUsername());
+                delay(500);
             }
-            case 10 -> deleteAccount(acc);
+            case 10 -> {
+                if (deleteAccount(acc)) {
+                    return;
+                }
+            }
             default -> System.out.println("Invalid option! Please try again.");
         }
     }
@@ -417,8 +440,16 @@ public class MainSystem {
         }
     }
 
-    private static void deleteAccount(Acc2 acc) {
+    private static boolean deleteAccount(Acc2 acc) {
         System.out.println("\n=== DELETE ACCOUNT ===");
+        
+        if (acc.getBalance() > 0) {
+            System.out.println("WARNING: Your account still has a balance of Php " + String.format("%.2f", acc.getBalance()));
+            System.out.println("Please withdraw or spend your money before deleting your account.");
+            System.out.println("Deletion cancelled.");
+            return false;
+        }
+
         System.out.println("WARNING: This action cannot be undone!");
         System.out.println("To confirm deletion, type your username: " + acc.getUsername());
         System.out.print("Type confirmation (or press Enter to cancel): ");
@@ -426,12 +457,14 @@ public class MainSystem {
 
         if (!confirmation.equals(acc.getUsername())) {
             System.out.println("Deletion cancelled.");
-            return;
+            return false;
         }
 
         Data.remove(acc.getUsername());
+        eWallets.remove(acc.getUsername());
         System.out.println("Account deleted successfully!");
         System.out.println("Logging out...");
         delay(1000);
+        return true;
     }
 }
