@@ -179,9 +179,8 @@ public class MainSystem {
         System.out.println("5. E-Wallet");
         System.out.println("6. Billing");
         System.out.println("7. Logout");
-        System.out.println("8. Check Load Balance");
-        System.out.println("9. Check History");
-        System.out.println("10. Delete Account");
+        System.out.println("8. Check History");
+        System.out.println("9. Delete Account");
         System.out.print("Choose: ");
 
         int choice = readIntSafe();
@@ -247,14 +246,10 @@ public class MainSystem {
                 return;
             }
             case 8 -> {
-                System.out.printf("Your load balance is: Php %.2f%n", acc.getLoadBalance());
-                delay(500);
-            }
-            case 9 -> {
                 cv.ViewHistory(acc.getUsername());
                 delay(500);
             }
-            case 10 -> {
+            case 9 -> {
                 if (deleteAccount(acc)) {
                     return;
                 }

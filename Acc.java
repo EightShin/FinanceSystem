@@ -15,10 +15,6 @@ public abstract class Acc {
     public abstract boolean withdraw (double amount);
     public abstract boolean sendLoad(double amount, Acc receiver);
 
-    public double getLoadBalance() {
-        return loadBalance;
-    }
-
     public double getBalance() {
         return balance;
     }
