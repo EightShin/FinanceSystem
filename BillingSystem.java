@@ -3,18 +3,6 @@
 public class BillingSystem {
     private static final double TAX_RATE = 0.01; 
 
-    private static double readDoubleSafe(Scanner scanner) {
-        try {
-            double v = scanner.nextDouble();
-            scanner.nextLine();
-            return v;
-        } catch (java.util.InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Invalid input. Please enter a valid number.");
-            return Double.NaN;
-        }
-    }
-
     private static int readIntSafe(Scanner scanner) {
         try {
             int v = scanner.nextInt();
@@ -56,20 +44,26 @@ public class BillingSystem {
     protected static void payBill(Acc acc, Scanner scanner, String billType, desrecorder cv) {
         while (true) {
             double billAmount;
-            while (true) {
-                System.out.print("Enter " + billType + " bill amount: ₱");
-                String line = scanner.nextLine();
-                billAmount = InputUtils.parseAmountOrNaN(line);
-                if (Double.isNaN(billAmount)) {
-                    System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
-                    continue;
+                while (true) {
+                    System.out.print("Enter " + billType + " bill amount (or type 'cancel' to go back): ₱");
+                    String line = scanner.nextLine();
+                    if (line == null) line = "";
+                    line = line.trim();
+                    if (line.equalsIgnoreCase("cancel")) {
+                        System.out.println("Payment cancelled.");
+                        return;
+                    }
+                    billAmount = InputUtils.parseAmountOrNaN(line);
+                    if (Double.isNaN(billAmount)) {
+                        System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
+                        continue;
+                    }
+                    if (billAmount <= 0) {
+                        System.out.println("Invalid! Bill amount must be positive! Please try again.");
+                        continue;
+                    }
+                    break;
                 }
-                if (billAmount <= 0) {
-                    System.out.println("Invalid! Bill amount must be positive! Please try again.");
-                    continue;
-                }
-                break;
-            }
 
             double taxAmount = billAmount * TAX_RATE;
             double totalAmount = billAmount + taxAmount;
