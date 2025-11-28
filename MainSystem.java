@@ -259,67 +259,77 @@ public class MainSystem {
     }
 }
 
-    private static void transfer (Acc2 sender) {
-    System.out.print("Enter recipient username: ");
-    String targetName = one.nextLine().trim();
-    Acc2 receiver = Data.get(targetName);
-
-    if (receiver == null) {
-        System.out.println("Invalid! Username not found! Please try again.");
-        return;
-    }
-
-    if (targetName.equals(sender.getUsername())) {
-        System.out.println("Invalid! Cannot transfer to yourself! Please try again.");
-        return;
-    }
-
-    
+    private static void transfer(Acc2 sender) {
+    Acc2 receiver;
+    String targetName;
     while (true) {
-        System.out.print("Amount to transfer (or type 'cancel' to go back): ");
-        String line = one.nextLine().trim();
-        if (line.equalsIgnoreCase("cancel")) {
+        System.out.print("Enter recipient username (or type 'cancel' to go back): ");
+        targetName = one.nextLine().trim();
+        if (targetName.equalsIgnoreCase("cancel")) {
             System.out.println("Transfer cancelled.");
             return;
         }
-
-        double amt = InputUtils.parseAmountOrNaN(line);
-        if (Double.isNaN(amt)) {
-            System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
+        if (targetName.isEmpty()) {
+            System.out.println("Username cannot be empty. Please try again.");
             continue;
         }
-
-        if (amt <= 0) {
-            System.out.println("Invalid! Amount must be positive! Please try again.");
+        receiver = Data.get(targetName);
+        if (receiver == null) {
+            System.out.println("Invalid! Username not found! Please try again.");
             continue;
         }
-
-        if (sender.getBalance() < amt) {
-            System.out.println("Invalid! Insufficient balance! Please try again.");
+        if (targetName.equals(sender.getUsername())) {
+            System.out.println("Invalid! Cannot transfer to yourself! Please try again.");
             continue;
         }
+        break;
+    }
 
-        boolean withdrawn = sender.withdraw(amt);
-        if (!withdrawn) {
-            System.out.println("Transfer failed during withdrawal.");
-            continue;
-        }
-
-        boolean deposited = receiver.deposit(amt);
-        if (!deposited) {
-            System.out.println("Transfer failed during deposit. Rolling back.");
-            sender.deposit(amt);
-            continue;
-        }
-
-        String currentTime = LocalDateTime.now().format(dateTimeFormatter);
-        cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
-        cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
-
-        System.out.printf("Successfully transferred Php %.2f to %s%n", amt, targetName);
-        delay(1000);
+    while (true) {
+    System.out.print("Amount to transfer (or type 'cancel' to go back): ");
+    String line = one.nextLine().trim();
+    if (line.equalsIgnoreCase("cancel")) {
+        System.out.println("Transfer cancelled.");
         return;
     }
+    double amt = InputUtils.parseAmountOrNaN(line);
+    if (Double.isNaN(amt)) {
+        System.out.println("Invalid input. Please enter a valid positive amount (no leading zeros). Please try again.");
+        continue;
+    }
+    if (amt <= 0) {
+        System.out.println("Invalid! Amount must be positive! Please try again.");
+        continue;
+    }
+
+    if (!line.matches("^[1-9]\\d*$")) {
+        System.out.println("Invalid amount! Please enter whole NUMBER only. No decimals.");
+        continue;
+    }
+
+    if (sender.getBalance() < amt) {
+        System.out.println("Invalid! Insufficient balance! Please try again.");
+        continue;
+    }
+
+    boolean withdrawn = sender.withdraw(amt);
+    if (!withdrawn) {
+        System.out.println("Transfer failed during withdrawal.");
+        continue;
+    }
+    boolean deposited = receiver.deposit(amt);
+    if (!deposited) {
+        System.out.println("Transfer failed during deposit. Rolling back.");
+        sender.deposit(amt);
+        continue;
+    }
+    String currentTime = LocalDateTime.now().format(dateTimeFormatter);
+    cv.AddHistory(sender.getUsername(), ":Transfer Out: -", amt, currentTime);
+    cv.AddHistory(receiver.getUsername(), ":Transfer In: +", amt, currentTime);
+    System.out.printf("Successfully transferred Php %.2f to %s%n", amt, targetName);
+    delay(1000);
+    return;
+        }
     }
 
     private static void processEWallet(Acc2 acc) {
