@@ -322,25 +322,6 @@ public class MainSystem {
     }
     }
 
-    public static void loadTransfer(Acc2 sender, Acc2 receiver, double amount) {
-        if (amount <= 0) {
-            System.out.println("Load amount must be positive! Please try again.");
-            return;
-        }
-        if (sender.getBalance() < amount) {
-            System.out.println("Insufficient balance to send load! Please try again.");
-            return;
-        }
-
-        boolean ok = sender.sendLoad(amount, receiver);
-        if (ok) {
-            String currentTime = LocalDateTime.now().format(dateTimeFormatter);
-            cv.AddHistory(sender.getUsername(), ":Send Load: -", amount, currentTime);
-            cv.AddHistory(receiver.getUsername(), ":Receive Load: +", amount, currentTime);
-            delay(1000);
-        }
-    }
-
     private static void processEWallet(Acc2 acc) {
         EWallet wallet = eWallets.get(acc.getUsername());
 

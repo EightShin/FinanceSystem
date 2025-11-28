@@ -33,29 +33,6 @@ public class Acc2 extends Acc {
         return true;
     }
 
-    @Override
-    public boolean sendLoad(double amount, Acc receiver) {
-        if (amount <= 0) {
-            System.out.println("Load amount must be positive!");
-            return false;
-        }
-        if (amount > balance) {
-            System.out.println("Insufficient balance to send load!");
-            return false;
-        }
-
-        balance -= amount;
-        receiver.loadBalance += amount;
-
-        System.out.printf("Successfully sent Php %.2f load to %s%n", amount, receiver.getUsername());
-        return true;
-    }
-
-    public boolean sendLoad(int amount, Acc receiver) {
-        return sendLoad((double) amount, receiver);
-    }
-
-
     public boolean withdraw (int amount) {
         return withdraw((double) amount);
     }
