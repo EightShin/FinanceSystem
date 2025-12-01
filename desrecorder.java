@@ -24,7 +24,7 @@ public class desrecorder   {
 
         public void ViewHistory(String Addr) {
 
-            System.out.println("Looking for " + Addr + "...\n");
+            System.out.println("Checking for " + Addr + "'s History" + "...\n");
 
             if(mpList.containsKey(Addr)) {
 
